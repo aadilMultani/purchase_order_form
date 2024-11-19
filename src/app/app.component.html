@@ -1,0 +1,294 @@
+<div class="container bg-white shadow ">
+  <div class="heading bg-light p-2 ps-0">
+    <h5>Purchase Order Form</h5>
+  </div>
+  <form class="mt-2" [formGroup]="purchaseOrderForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="clientName">Client Name <span class="text-danger">*</span></label>
+          <select formControlName="clientName" class="form-control" required (change)="onClientChange($event)">
+            <option value="">Select Client</option>
+            <ng-container *ngFor="let client of clientList; let i = index">
+              <option value="{{client.name}}">{{client.name}}</option>
+            </ng-container>
+          </select>
+          <div
+            *ngIf="purchaseOrderForm.get('clientName')?.invalid && (purchaseOrderForm.get('clientName')?.touched || purchaseOrderForm.get('clientName')?.dirty)">
+            <small class="text-danger" *ngIf="purchaseOrderForm.get('clientName')?.errors?.['required']">ClientName is
+              required.</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="purchaseOrderType">Purchase Order Type <span class="text-danger">*</span></label>
+          <select formControlName="purchaseOrderType" class="form-control" required>
+            <option value="">Select Type</option>
+            <option value="Group">Group PO</option>
+            <option value="Individual">Individual PO</option>
+          </select>
+          <div
+            *ngIf="purchaseOrderForm.get('purchaseOrderType')?.invalid && (purchaseOrderForm.get('purchaseOrderType')?.touched || purchaseOrderForm.get('purchaseOrderType')?.dirty)">
+            <small class="text-danger" *ngIf="purchaseOrderForm.get('purchaseOrderType')?.errors?.['required']">Purchase
+              order type is required.</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="purchaseOrderNo">Purchase Order No. <span class="text-danger">*</span></label>
+          <input type="text" formControlName="purchaseOrderNo" class="form-control" placeholder="PO Number" required />
+          <div
+            *ngIf="purchaseOrderForm.get('purchaseOrderNo')?.invalid && (purchaseOrderForm.get('purchaseOrderNo')?.touched || purchaseOrderForm.get('purchaseOrderNo')?.dirty)">
+            <small class="text-danger" *ngIf="purchaseOrderForm.get('purchaseOrderNo')?.errors?.['required']">Purchase
+              Order No is required.</small>
+            <small class="text-danger" *ngIf="purchaseOrderForm.get('purchaseOrderNo')?.errors?.['pattern']">Purchase
+              Order No must be alphanumeric.</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="receivedOn">Received On <span class="text-danger">*</span></label>
+          <input type="date" formControlName="receivedOn" class="form-control" required />
+          <div
+            *ngIf="purchaseOrderForm.get('receivedOn')?.invalid && (purchaseOrderForm.get('receivedOn')?.touched || purchaseOrderForm.get('receivedOn')?.dirty)">
+            <small class="text-danger" *ngIf="purchaseOrderForm.get('receivedOn')?.errors?.['required']">Received on is
+              required.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-md-6">
+        <div formGroupName="receivedFrom">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="name">Received From Name <span class="text-danger">*</span></label>
+                <input type="text" formControlName="name" class="form-control" placeholder="Received From Name"
+                  required />
+                <div
+                  *ngIf="purchaseOrderForm.get('receivedFrom.name')?.invalid && (purchaseOrderForm.get('receivedFrom.name')?.touched || purchaseOrderForm.get('receivedFrom.name')?.dirty)">
+                  <small class="text-danger"
+                    *ngIf="purchaseOrderForm.get('receivedFrom.name')?.errors?.['required']">Received From Name is
+                    required.</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="email">Received From Email </label>
+                <input type="email" formControlName="email" class="form-control" placeholder="Received From Email"
+                  required />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="poStartDate">PO Start Date <span class="text-danger">*</span></label>
+              <input type="date" formControlName="poStartDate" class="form-control" required />
+              <div
+                *ngIf="purchaseOrderForm.get('poStartDate')?.invalid && (purchaseOrderForm.get('poStartDate')?.touched || purchaseOrderForm.get('poStartDate')?.dirty)">
+                <small class="text-danger" *ngIf="purchaseOrderForm.get('poStartDate')?.errors?.['required']">PO Start
+                  Date is required.</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="poEndDate">PO End Date <span class="text-danger">*</span></label>
+              <input type="date" formControlName="poEndDate" class="form-control"
+                [min]="purchaseOrderForm.get('poStartDate')?.value" placeholder="Start Date" required />
+              <div
+                *ngIf="purchaseOrderForm.get('poEndDate')?.invalid && (purchaseOrderForm.get('poEndDate')?.touched || purchaseOrderForm.get('poEndDate')?.dirty)">
+                <small class="text-danger" *ngIf="purchaseOrderForm.get('poEndDate')?.errors?.['required']">PO End Date
+                  is required.</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="budget">Budget <span class="text-danger">*</span></label>
+              <input type="text" formControlName="budget" placeholder="Budget" class="form-control" required />
+              <div
+                *ngIf="purchaseOrderForm.get('budget')?.invalid && (purchaseOrderForm.get('budget')?.touched || purchaseOrderForm.get('budget')?.dirty)">
+                <small class="text-danger" *ngIf="purchaseOrderForm.get('budget')?.errors?.['required']">Budget is
+                  required.</small>
+                <small class="text-danger" *ngIf="purchaseOrderForm.get('budget')?.errors?.['maxlength']">Budget cannot
+                  exceed 5 digits.</small>
+                <small class="text-danger" *ngIf="purchaseOrderForm.get('budget')?.errors?.['pattern']">Budget must be a
+                  valid number.</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="currency">Currency <span class="text-danger">*</span></label>
+              <select formControlName="currency" class="form-control" required>
+                <option value="">Select Currency</option>
+                <ng-container *ngFor="let currency of currencyList">
+                  <option value="{{currency.name}}">{{currency.name}}</option>
+                </ng-container>
+              </select>
+              <div
+                *ngIf="purchaseOrderForm.get('currency')?.invalid && (purchaseOrderForm.get('currency')?.touched || purchaseOrderForm.get('currency')?.dirty)">
+                <small class="text-danger" *ngIf="purchaseOrderForm.get('currency')?.errors?.['required']">Currency is
+                  required.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="talend-detail my-3 bg-light">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5>Talent Detail</h5>
+        <button type="button" (click)="addTalent()" class="btn btn-secondary"
+          *ngIf="purchaseOrderForm.get('purchaseOrderType')?.value === 'Group'">Add Another</button>
+      </div>
+    </div>
+
+    <div formArrayName="talents">
+      <div *ngFor="let talent of talents.controls; let i = index" [formGroupName]="i" class="bg-light mt-2 p-2">
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="jobTitle">Job Title/REQ Name <span class="text-danger">*</span></label>
+                  <select formControlName="jobTitle" class="form-control" required (change)="onJobTitleChange($event)">
+                    <option value="">Select Job Title</option>
+                    <ng-container *ngFor="let jobReq of jobTitleList[0]?.talentsDetails">
+                      <option value="{{jobReq.jobTitle}}">{{jobReq.jobTitle}}</option>
+                    </ng-container>
+
+                  </select>
+                  <div
+                    *ngIf="talent.get('jobTitle')?.invalid && (talent.get('jobTitle')?.touched || talent.get('jobTitle')?.dirty)">
+                    <small class="text-danger" *ngIf="talent.get('jobTitle')?.errors?.['required']">Job Title is
+                      required.</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="reqId">JOB ID/REQ ID <span class="text-danger">*</span></label>
+                  <input type="text" formControlName="reqId" class="form-control" [value]="reqId[0]?.jobId" />
+                  <div
+                    *ngIf="talent.get('reqId')?.invalid && (talent.get('reqId')?.touched || talent.get('reqId')?.dirty)">
+                    <small class="text-danger" *ngIf="talent.get('reqId')?.errors?.['required']">JOB ID/REQ ID is
+                      required.</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div style="float: right;" (click)="removeTalent(i)">
+              <i class="bi bi-trash"></i>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+        <ng-container *ngFor="let talentName of reqId[0]?.talentsName; let i = index">
+          <div class="m-3 ms-0">
+            <input type="checkbox" (click)="talentSelection($event , i)"> <span class="fw-bold ps-2">{{talentName.name}} </span>
+          </div>
+
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="contractDuration">Contract Duration</label>
+                <input type="text" formControlName="contractDuration" placeholder="Contract Duration"
+                  class="form-control" />
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="form-group">
+                <label for="billRate">Bill Rate</label>
+                <input type="text" formControlName="billRate" placeholder="Bill Rate" class="form-control" />
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="form-group">
+                <label for="billRateCurrency">Currency</label>
+                <select formControlName="billRateCurrency" class="form-control">
+                  <option value="">Select Currency</option>
+                  <ng-container *ngFor="let currency of currencyList">
+                    <option value="{{currency.name}}">{{currency.name}}</option>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="form-group">
+                <label for="stdTime">Std Time BR</label>
+                <input type="text" formControlName="stdTime" placeholder="Std Time BR" class="form-control" />
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="form-group">
+                <label for="stdTimeCurrency">Currency</label>
+                <select formControlName="stdTimeCurrency" class="form-control">
+                  <option value="">Select Currency</option>
+                  <ng-container *ngFor="let currency of currencyList">
+                    <option value="{{currency.name}}">{{currency.name}}</option>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="form-group">
+                <label for="ovrTimeBR">Over Time BR</label>
+                <input type="text" formControlName="ovrTimeBR" placeholder="Over Time BR" class="form-control" />
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="form-group">
+                <label for="ovrTimeBRCurrency">Currency</label>
+                <select formControlName="ovrTimeBRCurrency" class="form-control">
+                  <option value="">Select Currency</option>
+                  <ng-container *ngFor="let currency of currencyList">
+                    <option value="{{currency.name}}">{{currency.name}}</option>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+      </div>
+    </div>
+
+    <div class="submit-btn m-3 ms-0 p-3 ps-0">
+      <button type="submit" class="btn btn-primary me-2">Save</button>
+      <button type="button" (click)="onReset()" class="btn btn-danger">Reset</button>
+    </div>
+  </form>
+</div>
